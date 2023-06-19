@@ -4,6 +4,10 @@ a{
     text-decoration: none;
 }
 
+.vh-50{
+  height: 50vh;
+}
+
 .grid-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
