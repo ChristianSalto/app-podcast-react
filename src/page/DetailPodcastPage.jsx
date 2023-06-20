@@ -51,12 +51,15 @@ const DetailPodcastPage = () => {
         <div className="container">
             <Header />
             <div className="row d-flex justify-content-between">
-                <div className="col-4">
+                <div className="col-12 col-lg-4 mb-4">
                     <CardDetails detailsCard={detailsCard} />
                 </div>
-                <div className="col-8">
-                    <div className="card">
-                        <Table />
+                <div className="col-12 col-lg-8">
+                    <div className="card text-start mb-4">
+                        <strong><h2>Episodes: {episodes?.length}</h2></strong>
+                    </div>
+                    <div className="card mb-5">
+                        <Table episodes={episodes} />
                     </div>
                 </div>
             </div>
