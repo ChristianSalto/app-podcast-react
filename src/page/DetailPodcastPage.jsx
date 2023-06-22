@@ -16,17 +16,45 @@ const DetailPodcastPage = () => {
     const { podcastId } = useParams();
 
     useEffect(() => {
+        const storeDataEpisodes = localStorage.getItem(`dataEpisode_${podcastId}`);
+        const storedDetails = localStorage.getItem(`podcastDetails_${podcastId}`);
+        const twentyFourHoursInMs = 24 * 60 * 60 * 1000;
+
+
+        if (storeDataEpisodes && storedDetails) {
+            const { img, nameSong } = JSON.parse(storedDetails);
+            const { lastExecution, data } = JSON.parse(storeDataEpisodes);
+            const elapsedTime = Date.now() - lastExecution;
+
+            if (elapsedTime <= twentyFourHoursInMs) {
+                setEpisodes(data);
+                setDetailsCard({
+                    img,
+                    nameSong
+                });
+                return;
+            }
+        }
+
         const getDataPodcasts = async () => {
             try {
 
                 const res = await getPodcastById(podcastId)
-                console.log(res)
 
                 const { trackName, artworkUrl600, feedUrl } = res.results[0];
-                setDetailsCard({
+                const detailsData = {
                     img: artworkUrl600,
                     nameSong: trackName
-                })
+                };
+
+                if (
+                    JSON.stringify(detailsData) !== storedDetails ||
+                    !storeDataEpisodes ||
+                    Date.now() - JSON.parse(storeDataEpisodes).lastExecution > twentyFourHoursInMs
+                ) {
+                    setDetailsCard(detailsData);
+                    localStorage.setItem(`podcastDetails_${podcastId}`, JSON.stringify(detailsData));
+                }
 
                 const xmlData = await getEpisodes(feedUrl)
 
@@ -36,16 +64,30 @@ const DetailPodcastPage = () => {
                         console.error(error);
                     } else {
                         const episodesData = result.rss.channel[0].item;
-                        setEpisodes(episodesData);
+                        if (
+                            JSON.stringify(episodesData) !== storeDataEpisodes ||
+                            !storedDetails ||
+                            Date.now() - JSON.parse(storeDataEpisodes).lastExecution > twentyFourHoursInMs
+                        ) {
+                            setEpisodes(episodesData);
+                            localStorage.setItem(`dataEpisode_${podcastId}`, JSON.stringify({
+                                lastExecution: Date.now(),
+                                data: episodesData
+                            }));
+                        }
                     }
                 });
+
             } catch (error) {
                 console.log(error)
             }
         }
 
-        getDataPodcasts()
+        getDataPodcasts();
+
+
     }, [])
+
 
     return (
         <div className="container">
@@ -59,7 +101,7 @@ const DetailPodcastPage = () => {
                         <strong><h2>Episodes: {episodes?.length}</h2></strong>
                     </div>
                     <div className="card mb-5">
-                        <Table episodes={episodes} />
+                        <Table episodes={episodes} podcastId={podcastId} />
                     </div>
                 </div>
             </div>

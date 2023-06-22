@@ -11,15 +11,6 @@ export const getToppodcasts = () => {
   });
 };
 
-// export const getPodcastById = (idPodcast = null) => {
-//   return axios.get(`${URL}lookup?id=${1535809341}`).then(response => {
-//     return response;
-//   }).catch(error => {
-//     const data = error.response
-//     return data;
-//   });
-// };
-
 export const getPodcastById = (podcastId = null) => {
   return axios.get(`${PROXY_URL}podcastId=${podcastId}`).then(response => {
     return response.data;

@@ -1,11 +1,13 @@
 import React from 'react';
+import { Link, useParams } from 'react-router-dom';
 
 const Table = (episodes) => {
     const { episodes: nestedEpisodes } = episodes
     const titleEpisode = nestedEpisodes.map(nestedEpisode => nestedEpisode.title.join())
     const enclosures = nestedEpisodes.map((nestedEpisode) => nestedEpisode.enclosure)
+    const descriptions = nestedEpisodes.map((nestedEpisode) => nestedEpisode.description)
     const linkEpisode = enclosures.map(item => {
-        return item ? item[0] : ""
+        return item ? item[0]["$"].url : ""
     })
 
     const datePodcast = nestedEpisodes.map((nestedEpisode) => {
@@ -15,6 +17,14 @@ const Table = (episodes) => {
     })
 
     const durationPodcast = nestedEpisodes.map((nestedEpisode) => nestedEpisode["itunes:duration"] ? nestedEpisode["itunes:duration"].join() : "")
+    const { podcastId } = useParams();
+
+
+    const payload = {
+        descriptions,
+        linkEpisode,
+        titleEpisode
+    }
 
     return (
         <div className='table-container'>
@@ -30,9 +40,9 @@ const Table = (episodes) => {
                     {titleEpisode.map((title, index) => (
                         <tr key={index}>
                             <th scope="row" className='text-start'>
-                                <a href={linkEpisode[index] ? linkEpisode[index]["$"].url : "#"}>
+                                <Link key={index} to={`/podcast/${podcastId}/episode/${index}`} state={payload}>
                                     {title.match(/Episode \d+ \| ["“]([^"”]+)["”]/) ? title.match(/Episode \d+ \| ["“]([^"”]+)["”]/)[1] : title}
-                                </a>
+                                </Link>
                             </th>
                             <td>{datePodcast[index]}</td>
                             <td>{durationPodcast[index]}</td>
