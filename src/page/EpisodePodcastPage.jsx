@@ -3,6 +3,7 @@ import { useLocation, useParams } from 'react-router-dom';
 import { Header } from '../components/shared/Header';
 import CardDetails from '../components/CardDetails/CardDetails';
 import ReactAudioPlayer from 'react-audio-player';
+import { removeHTMLTags } from '../utils/utils';
 
 const EpisodePodcastPage = () => {
     const { podcastId, episodeId } = useParams();
@@ -23,7 +24,7 @@ const EpisodePodcastPage = () => {
                         <div className="card">
                             <h2>{titleEpisode[episodeId]}</h2>
                             <p>
-                                {descriptions[episodeId]}
+                                {removeHTMLTags(descriptions[episodeId])}
                             </p>
                             <ReactAudioPlayer
                                 src={linkEpisode[episodeId]}

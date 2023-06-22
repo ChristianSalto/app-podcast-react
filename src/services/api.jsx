@@ -29,18 +29,3 @@ export const getEpisodes = (url = null) => {
     return data;
   });
 };
-
-// export const getEpisodeById = (idPodcast = null) => {
-//   const allOriginsUrl = 'https://allorigins.win/';
-//   const externalUrl = 'https://podcasts.apple.com/us/podcast/apple-events/id1473854035?i=1000479125753';
-//   return axios.get(allOriginsUrl + encodeURIComponent(externalUrl)).then(response => {
-//     const data = response.data.contents;
-//     console.log(data);
-//   }).catch(error => {
-//     const data = error.response
-//     return data;
-//   });
-// };
-
-
-//https://podcasts.apple.com/us/podcast/apple-events/id1473854035?i=1000479125753

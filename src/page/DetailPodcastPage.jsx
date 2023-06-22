@@ -86,7 +86,7 @@ const DetailPodcastPage = () => {
         getDataPodcasts();
 
 
-    }, [])
+    }, [podcastId])
 
 
     return (

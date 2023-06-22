@@ -1,7 +1,32 @@
 @import "~bootstrap/scss/bootstrap";
 
+* {
+  scroll-behavior: smooth;
+}
+
+*::-webkit-scrollbar {
+  width: 6px;
+}
+
+*::-webkit-scrollbar-track {
+  background-color: #f8f8f8;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 3px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+}
+
 a{
     text-decoration: none;
+}
+
+.container{
+  margin-bottom: 150px;
 }
 
 .table-container{
